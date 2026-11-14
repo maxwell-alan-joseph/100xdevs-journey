@@ -1,4 +1,6 @@
 const express = require("express")
+const jwt = requrie("jsonwebtoken")
+
 const app = express();
 
 app.use(express.json());
@@ -16,7 +18,7 @@ app.post("/signup", (req, res) => {
             message: "username already exists"
         })
     }
-
+})
 
 app.post("/signin", (req, res) => {
     const username = req.body.username;
@@ -30,10 +32,15 @@ app.post("/signin", (req, res) => {
         })
     }
 
-    
-})
+    const token = jwt.sign({
+        username: username 
+    }, "hashedsecret");
 
-    users.push({
+    res.json({
+        token: token
+    })
+
+        users.push({
         username, password
     })
 
@@ -42,7 +49,29 @@ app.post("/signin", (req, res) => {
     })
 })
 
+
 app.post("/notes", (req, res) => {
+
+    //checking the right header for the, extacting the user from the header
+    const token = req.headers.token;
+
+    if(!token) {
+        res.status(403).send({
+            message: "You are not logged in"
+        });
+        return;
+    }
+
+    const decoded = jwt.verify(token, "hashedsecret")
+    const username = decoded.username;
+
+    if(!username) {
+        return  res.json(403).send({
+            message: "invalid token"
+        })
+    }
+
+
      const notesBackend = req.body.notesBackend;
      notesDB.push[notesBackend];
 
