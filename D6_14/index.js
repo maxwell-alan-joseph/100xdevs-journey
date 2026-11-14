@@ -1,4 +1,5 @@
-const express = require("express")
+const express = require("express");
+const { use } = require("react");
 const jwt = requrie("jsonwebtoken")
 
 const app = express();
@@ -73,7 +74,9 @@ app.post("/notes", (req, res) => {
 
 
      const notesBackend = req.body.notesBackend;
-     notesDB.push[notesBackend];
+     notesDB.push({
+        notesBackend, username
+     });
 
      res.json({
         message: "new note added"
@@ -81,8 +84,27 @@ app.post("/notes", (req, res) => {
 })
 
 app.get("/notes", (req, res) => {
+    const token = req.headers.token;
+
+    if(!token) {
+        res.status(403).send({
+            message: "You are not logged in"
+        });
+        return;
+    }
+
+    const decoded = jwt.verify(token, "hashedsecret")
+    const username = decoded.username;
+
+    if(!username) {
+        return  res.json(403).send({
+            message: "invalid token"
+        })
+    }
+
+    const userNotes = notesDB.filter(noteDB => noteDB.username === username)
     res.json({
-        notesDB
+        notes: userNotes
     })
 })
 
