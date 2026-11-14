@@ -6,31 +6,46 @@
     <body>
 
         <div  style = "display: flex; padding: 30px 100px; justify-content: space-between;">
-            <div id="notesDiv">
+            <div id="allNotes">
                 Loading Notes...
             </div>
 
             <div>
                 <input id="userNote" type="text" placeholder="Your new Note" />
-                <button onclick="createToDo()">Submit</button>
+                <button onclick="createNote()">Submit</button>
             </div>
         </div>
 
         <script>
-            
             async function getNotes(){
                 const response = await axios.get("http://localhost:3000/notes");
                 const notesDbFrontend = response.data.notesDb;
 
-                document.getElementById("notesDiv").innerHTML = "";
+                document.getElementById("allNotes").innerHTML = "";
 
-                for (let i = 0; i <= notesDbFrontend.lenght; i++) {
-                    const fetchAllNotes = document.createElemet("div");
+                for(let i=0; i < notesDbFrontend.length; i++){
+                    const fetchAllNotes = document.createElement("div");
                     fetchAllNotes.innerHTML = notesDbFrontend[i];
-                    document.getElementById("notesDiv").appendChild(fetchAllNotes);
+                    fetchAllNotes.setAttribute("style", "border: 2px solid black")
+                    document.getElementById("allNotes").appendChild(fetchAllNotes);
                 }
             }
-            getNotes()
+            getNotes();
+         
+            async function createNote(){
+                await axios.post("http://localhost:3000/notes", {
+                    newNoteBCK: document.getElementById("userNote").value
+                })
+
+                const newNote = document.createElement("div");
+                console.log(newNote);
+
+                newNote.innerHTML = document.getElementById("userNote").value;
+                newNote.setAttribute("style", "border: 2px solid black")
+                document.getElementById("allNotes").appendChild(newNote);
+
+                document.getElementById("userNote").value = "";
+            }
         </script>
 
     </body>
