@@ -17,6 +17,22 @@ app.post("/signup", (req, res) => {
         })
     }
 
+
+app.post("/signin", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const userExists = users.find(user => user.username === username && user.password === password);
+
+    if (!userExists) {
+        return res.status(403).json({
+            message: "incorrect credentials";
+        })
+    }
+
+    
+})
+
     users.push({
         username, password
     })
