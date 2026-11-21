@@ -2,30 +2,39 @@ const express = require ("express");
 
 const app = express();
 
-//
-app.get("/health-checkup", (req, res) => {
-    console.log(req.query);
-    const kidneyId = req.query.kidneyId;
+//adding middleware functions 
+
+function userValidator (req, res, next) {
     const username = req.query.username;
     const password = req.query.password;
 
-    if(username != "alan" || password != "123") {
+    if(!(username === "alan" && password === "123")){
         res.status(403).json({
-            msg: "invalid credentials"
-        });
-        return; //early return so that if this case is not passed 
-        //the console handler stops here 
+            message: "User Credentials"
+        })
+    } else {
+        next();
     }
+}
 
-    if (kidneyId != 1 && kidneyId != 2) {
-        res.status(402).json({
-            msg: "your kidneyId is invalid"
-        });
-        return; //again an early return 
-//return can be inside if statement too but it will not be an early return 
-//scenario the handler still runs if the return is inside the if  
+function kidneyValidator(req, res, next) {
+    const kidneyId = req.query.kidneyId;
+
+    if(kidneyId != 1 && kidneyId !=2){
+        res.status(403).json({
+            message: "Your kidneyId is invalid"
+        })
+    } else {
+        next();
     }
+}
 
+app.get("/kidney-checkup", userValidator, kidneyValidator, (req, res) => {
+    res.send("Your kidney is healthy")
+})
+
+
+app.get("/heart-checkup", userValidator, (req, res) => {
     res.send("Your heart is healthy")
 })
 
