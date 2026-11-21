@@ -1,5 +1,10 @@
 const express = require ("express");
+const zod = require('zod'); //zod a new way of schema validation rather than a manual one
+
 const app = express(); //instance of the express module
+
+app.use(express.json())
+//without using the above line of code body doesn't get extracted specifically into JSON format to read
 
 let requestCount = 0;
 //middleware
@@ -49,6 +54,20 @@ app.get("/kidney-checkup", userValidator, kidneyValidator, (req, res) => {
 //get handler for the route /heart-checkup
 app.get("/heart-checkup", userValidator, (req, res) => {
     res.send("Your heart is healthy")
+})
+
+
+app.post("/kidney_lenght", (req, res) => {
+    const kidneys = req.body.kidneys;
+    const kidneyLenght = kidneys.length;
+
+    res.send(`You have ${kidneyLenght} kidneys`)
+})
+
+//a global catch => an error - handling middleware which takes 4 inputs and throws /catches the error that gives 
+// a better error message 
+app.use( (err, req, res, next)=> {
+    res.send("something bad with the server try again after sometime")
 })
 
 
