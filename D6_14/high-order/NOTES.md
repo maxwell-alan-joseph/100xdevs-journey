@@ -1,5 +1,7 @@
-Going back to basics of learning 
-	1. High-order arrow functions
-	2. Map Functions
-	3. Find 
-	4. forEach
+# Going Back to basics to rebrush them 
+```
+	=> High Order Arrow functions
+	=> Maps
+	=> Find
+	=> ForEach
+```
