@@ -5,8 +5,8 @@ server.use(express.json());
 
 
 function userValidation(req, res, next) {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.query.username;
+    const password = req.query.password;
 
     if (username != "alan" || password != "123") {
         res.status(403).send("credentials are invalid")
@@ -15,11 +15,12 @@ function userValidation(req, res, next) {
 }
 
 function kidneyValidator(req, res, next){
-    const kidneyId = req.body.kidneyId;
+    const kidneyId = req.query.kidneyId;
     
     if(kidneyId != 1 && kidneyId == 2) {
         res.status(401).send("Your kidneyId's are invalid")
     }
+    next();
 }
 
 server.get("/kidney-checkup", userValidation, kidneyValidator,  (req, res) => {
@@ -30,6 +31,9 @@ server.get("/heart-checkup", userValidation, (req, res) => {
     res.send("Your heart is healthy")
 })
 
+server.use( (err, req, res, next) => {
+    res.send("something wrong with the server")
+})
 
 
 server.listen(3000, () => {
