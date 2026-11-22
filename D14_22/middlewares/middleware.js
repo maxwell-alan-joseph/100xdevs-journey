@@ -22,14 +22,13 @@ function kidneyValidator(req, res, next){
     }
 }
 
-server.get("/kidney-checkup", (req, res) => {
-    
+server.get("/kidney-checkup", userValidation, kidneyValidator,  (req, res) => {
+    res.send("Your kidney is healthy")
 })
 
-server.get("/heart-checkup", (req, res) => {
-
+server.get("/heart-checkup", userValidation, (req, res) => {
+    res.send("Your heart is healthy")
 })
-
 
 
 
