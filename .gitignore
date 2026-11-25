@@ -1,2 +1,5 @@
 
+.env
+.enb
+.DS_Store
 node_modules/

@@ -1,5 +1,8 @@
 const express = require ("express");
+const zod = require("zod");
 const server = express();
+
+const schema = zod.array(zod.number());
 
 server.use(express.json());
 
@@ -30,6 +33,16 @@ server.get("/kidney-checkup", userValidation, kidneyValidator,  (req, res) => {
 server.get("/heart-checkup", userValidation, (req, res) => {
     res.send("Your heart is healthy")
 })
+
+server.post("/kidney-checkup", userValidation, (req, res) => {
+    const kidneys = req.body.kidneys;
+    const response = schema.safeParse(kidneys);
+    console.log(response);
+    const kidneysLength = kidneys.length;
+
+    res.send(`You have ${kidneysLength} kidneys`)
+
+} )
 
 server.use( (err, req, res, next) => {
     res.send("something wrong with the server")

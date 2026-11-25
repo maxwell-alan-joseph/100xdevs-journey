@@ -1,0 +1,9 @@
+<html> </html>
+
+document.getElementById('parent').addEventListener('click', () => {
+  console.log('parent');
+});
+document.getElementById('child').addEventListener('click', (e) => {
+  console.log('child');
+  // e.stopPropagation();
+});
