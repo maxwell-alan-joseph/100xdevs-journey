@@ -1,22 +1,13 @@
-const obj = {name: "jpse", 
-            age: 23, 
-            gender: "male"
-
-}
+const prices = {pen: 10, book: 50, bag: 200};
 
 
 
-console.log(obj["name"]);
+let ans  = (Object.keys(prices));
 
 
 
+const newObj =  {} 
+let object1 = ans[0];
+newObj.object1 = 4;
 
-
-let arrOfObj = Object.keys(obj)
-
-//console.log(arrOfObj);
-
-for ( let i = 0; i < arrOfObj.length; i ++) {
-    let soln = arrOfObj[i]
-   //console.log(soln, obj[soln])
-}
+console.log(newObj)
